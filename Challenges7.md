@@ -1,37 +1,39 @@
-1/
+## 1/ What was the total quantity sold for all products?
+```sql
 SELECT 
 	p.product_name,
 	SUM(b.qty) as total
 FROM balanced_tree.sales b
 JOIN product_details p on b.prod_id = p.product_id
 GROUP BY p.product_name
-
-2/
-
+```
+## 2/ What is the total generated revenue for all products before discounts?
+```sql
 SELECT 
 	p.product_name,
     SUM(b.qty*b.price) as price_before_discount
 FROM balanced_tree.sales b
 JOIN product_details p on b.prod_id = p.product_id
 GROUP BY p.product_name
-
-3/
-
+```
+## 3/ What was the total discount amount for all products?
+```sql
 SELECT 
 	p.product_name,
     SUM(b.discount) as price_before_discount
 FROM balanced_tree.sales b
 JOIN product_details p on b.prod_id = p.product_id
 GROUP BY p.product_name
+```
 
-
-B/
-1/ 
-
+### B/
+## 1/ How many unique transactions were there?
+```sql
 SELECT count(distinct txn_id) 
 FROM balanced_tree.sales;
-
-2/
+```
+## 2/ What is the average unique products purchased in each transaction?
+```sql
 with prods as (
 select 
 	distinct txn_id,
@@ -41,8 +43,9 @@ from sales)
 select 
 ROUND(AVG(prod),0)
 from prods
-
-3/
+```
+## 3/  What are the 25th, 50th and 75th percentile values for the revenue per transaction?
+```sql
 with revenue_cte as (SELECT 
 	txn_id,
     sum(qty * price) as revenue
@@ -62,9 +65,9 @@ SELECT
     MIN(CASE WHEN percentile_rank >= 0.75 THEN revenue END) AS median_75th
 FROM
     ranked_revenue;
-
-
-4/
+```
+## 4/ What is the average discount value per transaction?
+```sql
 with cte as (SELECT 
 	distinct txn_id,
     SUM(discount) as total_discount
@@ -74,7 +77,9 @@ GROUP BY txn_id)
 select 
  AVG(total_discount)
 FROM cte
-5/
+```
+## 5/ What is the percentage split of all transactions for members vs non-members?
+```sql
 WITH transactions_cte AS (
   SELECT
     member,
@@ -88,7 +93,9 @@ SELECT
 FROM
  transactions_cte
 GROUP BY member
-6/
+```
+## 6/ What is the average revenue for member transactions and non-member transactions?
+```sql
 WITH transactions_cte AS (
   SELECT
     member,
@@ -103,9 +110,10 @@ SELECT
 FROM
  transactions_cte
 GROUP BY member
-
-C/
-1/
+```
+## C/
+## 1/ What are the top 3 products by total revenue before discount?
+```sql
 SELECT
 	p.product_id,
 	p.product_name,
@@ -115,8 +123,9 @@ INNER JOIN product_details p on s.prod_id = p.product_id
 GROUP BY p.product_id, p.product_name
 ORDER BY revenue_no_discount DESC
 LIMIT 3
-
-2/
+```
+## 2/ What is the total quantity, revenue and discount for each segment?
+```sql
 SELECT
 	p.segment_name,
     SUM(s.qty) as quantity,
@@ -125,11 +134,9 @@ SELECT
 FROM sales s
 INNER JOIN product_details p on s.prod_id = p.product_id
 GROUP BY p.segment_name
-
-3/
-
-
-
+```
+## 3/ What is the top selling product for each segment?
+```sql
 WITH top_selling_cte AS ( 
   SELECT 
     product.segment_id,
@@ -155,8 +162,9 @@ SELECT
   total_quantity
 FROM top_selling_cte
 WHERE ranking = 1;
-4/
-
+```
+## 4/ What is the total quantity, revenue and discount for each category?
+```sql
 SELECT
 	p.category_id,
     p.category_name,
@@ -166,8 +174,9 @@ SELECT
 FROM sales s
 INNER JOIN product_details p on s.prod_id = p.product_id
 GROUP BY p.category_id, p.category_name
-
-5/
+```
+## 5/ What is the top selling product for each category?
+```sql
 WITH top_selling_cte AS ( 
   SELECT 
     product.category_id,
@@ -196,6 +205,5 @@ SELECT
   total_quantity
 FROM top_selling_cte
 WHERE ranking = 1;
-
-
+```
 

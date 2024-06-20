@@ -1,9 +1,10 @@
-1/
-
+## 1/ How many users are there?
+```sql
 SELECT count(distinct user_id) 
 FROM clique_bait.users;
-
-2/
+```
+## 2/ How many cookies does each user have on average?
+```sql
 WITH cookie AS (SELECT 
 	u.user_id,
     count(u.cookie_id) as cookie_id_count
@@ -14,31 +15,33 @@ GROUP BY user_id
 SELECT 
   ROUND(AVG(cookie_id_count),0) AS avg_cookie_id
 FROM cookie;
-
-3/
-
+```
+## 3/ What is the unique number of visits by all users per month?
+```sql
 SELECT
 	EXTRACT(MONTH FROM event_time) as month_date,
 	count(distinct visit_id)
 FROM clique_bait.events
 GROUP BY month_date
-
-4/
+```
+## 4/ What is the number of events for each event type?
+```sql
 SELECT
 	event_type,
 	count(*) as event_count
 FROM clique_bait.events
 GROUP BY event_type
-
-
-5/
+```
+## 5./ What is the percentage of visits which have a purchase event?
+```sql
 SELECT 
 	ROUND (100 * count(distinct e.visit_id) / ( select count(distinct visit_id) from events),1)
 FROM clique_bait.event_identifier i
 JOIN events e on i.event_type = e.event_type
 WHERE i.event_name = 'Purchase'
-
-6/
+```
+## 6/ What is the percentage of visits which view the checkout page but do not have a purchase event?
+```sql
 SELECT 
     COUNT(DISTINCT CASE WHEN page_id = '12' AND event_type = '1' THEN visit_id END) AS checkout,
     COUNT(DISTINCT CASE WHEN event_type = '3' THEN visit_id END) AS purchase,
@@ -46,12 +49,11 @@ SELECT
 
 FROM 
     clique_bait.events;
-
+```
 checkout bao gồm cả purchase và ko purchase
 
-
-7/
-
+### 7/ What are the top 3 pages by number of views?
+```sql
 SELECT 
 	e.page_id , 
 	h.page_name ,
@@ -62,9 +64,9 @@ WHERE e.event_type = '1'
 GROUP BY e.page_id , h.page_name
 ORDER BY visit_count DESC
 LIMIT 3
-
-8/
-
+```
+### 8/  What is the number of views and cart adds for each product category?
+```sql
 SELECT 
   h.product_category,
   SUM(CASE WHEN e.event_type = 1 THEN 1 ELSE 0 END) AS page_views,
@@ -72,8 +74,9 @@ SELECT
 FROM events e 
 JOIN page_hierarchy h on e.page_id = h.page_id
 GROUP BY h.product_category
-
-9/
+```
+## 9/ What are the top 3 products by purchases?
+```sql
 WITH product_page_events AS ( -- Note 1
   SELECT 
     e.visit_id,
@@ -113,11 +116,11 @@ combined_table AS ( -- Note 3
   FROM combined_table
   GROUP BY product_category
   ORDER BY purchases DESC
+  ```
 
-B/
-
-1/
-
+## B
+## How many times was each product viewed? How many times was each product added to cart? How many times was each product added to a cart but not purchased (abandoned)? How many times was each product purchased?
+```sql
 WITH product_page_events AS ( -- Note 1
   SELECT 
     e.visit_id,
@@ -159,7 +162,7 @@ combined_table AS ( -- Note 3
     SUM(CASE WHEN cart_add = 1 AND purchase = 1 THEN 1 ELSE 0 END) AS purchases
   FROM combined_table
   GROUP BY product_category
-  
+  ```
   
   
   

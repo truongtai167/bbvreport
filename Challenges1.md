@@ -1,20 +1,26 @@
 ****CHALLENGES 1*****
 
-1/ Select s.customer_id , sum(price) as total
+## 1. What is the total amount each customer spent at the restaurant? What is the total amount each customer spent at the restaurant?
+```sql 
+Select s.customer_id , sum(price) as total
 From dannys_diner.sales s
 JOIN dannys_diner.menu m on s.product_id = m.product_id
 GROUP BY s.customer_id
+```
 
 
-
-2/
+## 2. How many days has each customer visited the restaurant?
+```sql
 Select s.customer_id , count(distinct(s.order_date))
 From dannys_diner.sales s
 JOIN dannys_diner.menu m on s.product_id = m.product_id
 GROUP BY s.customer_id
-​
+​```
 
-3/WITH FirstPurchaseDates AS (
+
+## 3. What was the first item from the menu purchased by each customer?
+```sql
+WITH FirstPurchaseDates AS (
     SELECT 
         customer_id, 
         MIN(order_date) AS first_order_date
@@ -36,8 +42,11 @@ GROUP BY
     s.customer_id,m.product_name
 ORDER BY 
     s.customer_id,m.product_name
+```
 
-4/WITH TIMEPURCHASE AS (
+## 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+```sql
+WITH TIMEPURCHASE AS (
   SELECT COUNT(m.product_name) as timepurchase, m.product_name
 FROM dannys_diner.menu m
 JOIN dannys_diner.sales s on m.product_id = s.product_id
@@ -50,8 +59,10 @@ WHERE tp.timepurchase = (
     SELECT MAX(timepurchase)
     FROM TIMEPURCHASE
 );
+```
 
-5/-- Example Query:
+## 5. Which item was the most popular for each customer?
+```sql
 SELECT 
     sales.customer_id,
     menu.product_name,
@@ -71,9 +82,10 @@ HAVING COUNT(menu.product_id) = (
         GROUP BY sales_inner.customer_id, sales_inner.product_id
     ) AS subquery
 );
-6/
-***************
+```
 
+## 6. Which item was purchased first by the customer after they became a member?
+```sql
 WITH MINORDERDATE AS (SELECT 
         s.customer_id,
         MIN(s.order_date) AS first_order_date
@@ -86,8 +98,9 @@ SELECT s.customer_id , m.product_name
 FROM dannys_diner.sales s
 JOIN MINORDERDATE mo on s.customer_id = mo.customer_id and s.order_date = mo.first_order_date
 JOIN dannys_diner.menu m on s.product_id = m.product_id
-
-7/
+```
+## 7. Which item was purchased just before the customer became a member?
+```sql
 WITH MINORDERDATE AS (SELECT 
         s.customer_id,
         MAX(s.order_date) AS first_order_date
@@ -100,7 +113,9 @@ SELECT s.customer_id , m.product_name
 FROM dannys_diner.sales s
 JOIN MINORDERDATE mo on s.customer_id = mo.customer_id and s.order_date = mo.first_order_date
 JOIN dannys_diner.menu m on s.product_id = m.product_id
-8/
+```
+## 8. What is the total items and amount spent for each member before they became a member?
+```sql
 WITH customer_summary AS (
     SELECT 
         s.customer_id, 
@@ -121,7 +136,9 @@ SELECT
 FROM customer_summary
 GROUP BY customer_id
 ORDER BY customer_id;
-9/
+```
+## 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+```sql
 SELECT
     s.customer_id,
     SUM(CASE
@@ -132,7 +149,9 @@ FROM dannys_diner.sales s
 JOIN dannys_diner.menu me ON s.product_id = me.product_id
 GROUP BY s.customer_id
 ORDER BY s.customer_id;
-10/
+```
+## 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+```sql
 SELECT
     s.customer_id,
     SUM(CASE
@@ -145,3 +164,4 @@ JOIN dannys_diner.members mb ON s.customer_id = mb.customer_id
 WHERE s.order_date < '2021-01-31' and s.order_date >= mb.join_date
 GROUP BY s.customer_id
 ORDER BY s.customer_id;
+```

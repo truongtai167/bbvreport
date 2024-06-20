@@ -1,10 +1,10 @@
-********************************************
-// lay name , jobtitle , role , totalprogram , avgrating , totalfollowers , totalstudent, totalfeedback  cua mentor
+## lay name , jobtitle , role , totalprogram , avgrating , totalfollowers , totalstudent, totalfeedback  cua mentor
+```sql
 SELECT 
     u.id,
     u.name,
     j.name as jobtitle,
-    u.location,
+    u.location_id,
     u.role,
     (SELECT COUNT(*) FROM Program WHERE user_id = 'U1') as total_programs,
     (SELECT COUNT(*) FROM Feedback WHERE receiver_id = 'U1') as total_feedback,
@@ -25,9 +25,10 @@ SELECT
 FROM Userr u 
 JOIN Jobtitle j on u.jobtitle_id = j.id
 WHERE u.id = 'U1';
+```
 
-********************************************
-// lay tat ca program cua 1 user va avg(rating)
+## lay tat ca program cua 1 user va avg(rating)
+```sql
 SELECT 
     p.id,
     p.name,
@@ -52,9 +53,10 @@ GROUP BY
 ORDER BY 
     total_rating DESC;
 
+```
 
-********************************************
-// lay experience cua 1 user
+## lay experience cua 1 user
+```sql
 SELECT 
     e.jobtitle,
     c.name AS company_name,
@@ -78,28 +80,30 @@ JOIN
     Userr u ON p.user_id = u.id
 WHERE 
     pu.user_id = 'U2';
+```
 
-********************************************
-// lay cert cua 1 user
+## lay cert cua 1 user
+```sql
 SELECT c.name,c.description 
 FROM Userr u
 JOIN CertUser cu on u.id = cu.user_id
 JOIN Cert c on cu.cert_id = c.id
 WHERE u.id = 'U1'
-
-********************************************
-// Select feedback from programs of mentor
+```
+## Select feedback from programs of mentor
+```sql
 SELECT f.rating,f.description 
 FROM Feedback f
 JOIN Program p on f.program_id = p.id
 JOIN Userr u on p.user_id = u.id and f.receiver_id = u.id
 WHERE u.id ='U1'
+```
 
-
-********************************************
-// Select skill 
+## Select skill
+```sql 
 Select s.name
 From Skill s
 JOIN UserSkill us on s.id = us.skill_id
 JOIN Userr u on us.user_id = u.id
 WHERE u.id ='U1'
+```
