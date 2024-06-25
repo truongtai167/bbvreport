@@ -1,0 +1,171 @@
+CREATE TABLE Jobtitle (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255)
+);
+
+CREATE TABLE Location (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255)
+);
+
+CREATE TABLE SourceType (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255)
+);
+
+CREATE TABLE Role (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255)
+);
+CREATE TABLE Userr (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255),
+   location_id varchar(5),
+   jobtitle_id varchar(5),
+   role_id varchar(5),
+   FOREIGN KEY (jobtitle_id) REFERENCES Jobtitle(id),
+   FOREIGN KEY (location_id) REFERENCES Location(id),
+   FOREIGN KEY (role_id) REFERENCES Role(id)
+);
+
+CREATE TABLE Program (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255),
+   category varchar(5),
+   description varchar(255),
+   price INT,
+   status varchar(50),
+   mentor_id varchar(5),
+   image varchar(5),
+   FOREIGN KEY (mentor_id) REFERENCES Userr(id)
+);
+CREATE TABLE Challenge (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255),
+   category varchar(5),
+   description varchar(255),
+   mentor_id varchar(5),
+   image varchar(5),
+   FOREIGN KEY (mentor_id) REFERENCES Userr(id)
+);
+
+CREATE TABLE Course (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   name varchar(255),
+   category varchar(5),
+   description varchar(255),
+   price decimal(5,2),
+   status varchar(50),
+   mentor_id varchar(5),
+   image varchar(5),
+   FOREIGN KEY (mentor_id) REFERENCES Userr(id)
+);
+
+CREATE TABLE Follow (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   follower_id varchar(5),
+   followee_id varchar(5),
+   FOREIGN KEY (follower_id) REFERENCES Userr(id),
+   FOREIGN KEY (followee_id) REFERENCES Userr(id)
+);
+
+
+CREATE TABLE CredentialIssued (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   sourcetemplate_id varchar(5),
+   user_id varchar(5),
+   credentialcode varchar(50),
+   certified_at datetime,
+   FOREIGN KEY (sourcetemplate_id) REFERENCES SourceTemplate(id),
+   FOREIGN KEY (user_id) REFERENCES Userr(id)
+);
+CREATE TABLE SourceTemplate (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   template_id varchar(5),
+   source_id varchar(5),
+   sourcetype_id varchar(5),
+   FOREIGN KEY (sourcetype_id) REFERENCES SourceType(id)
+);
+
+CREATE TABLE Company (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    name VARCHAR(255),
+    img VARCHAR(255)
+);
+
+CREATE TABLE Experience (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    jobtitle VARCHAR(255),
+    company_id VARCHAR(5),
+    type VARCHAR(255),
+    user_id VARCHAR(5),
+    FOREIGN KEY (company_id) REFERENCES Company(id),
+    FOREIGN KEY (user_id) REFERENCES Userr(id)
+);
+
+CREATE TABLE University (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    name VARCHAR(255),
+    img VARCHAR(255)
+);
+
+CREATE TABLE Education (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    degree VARCHAR(255),
+    university_id VARCHAR(5),
+    user_id VARCHAR(5),
+    FOREIGN KEY (university_id) REFERENCES University(id),
+    FOREIGN KEY (user_id) REFERENCES Userr(id)
+);
+
+CREATE TABLE ProgramUser (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(5),
+    program_id VARCHAR(5),
+    FOREIGN KEY (user_id) REFERENCES Userr(id),
+    FOREIGN KEY (program_id) REFERENCES Program(id)
+);
+
+
+CREATE TABLE Post (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    title VARCHAR(255),
+    user_id VARCHAR(5),
+    views INT,
+    FOREIGN KEY (user_id) REFERENCES Userr(id)
+);
+
+CREATE TABLE Skill (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    name VARCHAR(255)
+);
+
+CREATE TABLE UserSkill (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(5),
+    skill_id VARCHAR(5),
+    FOREIGN KEY (user_id) REFERENCES Userr(id),
+    FOREIGN KEY (skill_id) REFERENCES Skill(id)
+);
+
+CREATE TABLE Event (
+    id VARCHAR(5) NOT NULL PRIMARY KEY,
+    title VARCHAR(255),
+    user_id VARCHAR(5),
+    views INT,
+    FOREIGN KEY (user_id) REFERENCES Userr(id)
+);
+
+
+CREATE TABLE Review (
+    id VARCHAR(5) PRIMARY KEY,
+    receiver_id VARCHAR(5),
+    sender_id VARCHAR(5),
+    rating INT,
+    content VARCHAR(255),
+    sourcetype_id VARCHAR(5),
+    FOREIGN KEY (sender_id) REFERENCES Userr(id),
+	FOREIGN KEY (sourcetype_id) REFERENCES Sourcetype(id)
+);
+
+

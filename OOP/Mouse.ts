@@ -26,6 +26,9 @@ class Mouse {
     scroll(scrolldirection: string) {
         this._scroll.scroll(scrolldirection)
     }
+    changeLightColor(newColor: string) {
+        this._light.changeColor(newColor)
+    }
 }
 
 class Button {
@@ -65,6 +68,11 @@ class Light {
     constructor(color: string, brightness: string) {
         this._color = color
         this._brightness = brightness
+    }
+
+    changeColor(newColor: string) {
+        this._color = newColor
+        console.log(`Light color changed to ${newColor}`)
     }
 }
 
@@ -114,3 +122,4 @@ console.log(myMouse)
 
 myMouse.click('Left')
 myMouse.scroll('up')
+myMouse.changeLightColor('Yellow')
