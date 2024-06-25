@@ -86,6 +86,12 @@ GROUP BY next_plan_id
 
 ## 7. What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
 ## 8. How many customers have upgraded to an annual plan in 2020?
+```sql
+SELECT COUNT(DISTINCT customer_id) AS num_of_customers
+FROM foodie_fi.subscriptions
+WHERE plan_id = 3
+  AND start_date <= '2020-12-31';
+```
 ## 9. How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
 ## 10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)
 
