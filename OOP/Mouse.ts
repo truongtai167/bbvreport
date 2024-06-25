@@ -24,13 +24,7 @@ class Mouse {
         }
     }
     scroll(scrolldirection: string) {
-        const scrolls = this._scroll._scroll_direction.find(scrolllist => scrolllist === scrolldirection);
-        if (scrolls) {
-            scrolls.scroll()
-        }
-        else {
-            console.log(`Button ${buttonname} not found `)
-        }
+        this._scroll.scroll(scrolldirection)
     }
 }
 
@@ -55,8 +49,9 @@ class Scroll {
         this._shape = shape
         this._scroll_direction = scroll_dicrection
     }
-    scroll() {
-        console.log(this._scroll_direction)
+    scroll(dicrection: string) {
+        if (this._scroll_direction.includes(dicrection))
+            console.log(dicrection)
     }
 
 }
@@ -118,3 +113,4 @@ const myMouse = new Mouse([leftButtonn, rightButtonn], pinkLight, rectangular, m
 console.log(myMouse)
 
 myMouse.click('Left')
+myMouse.scroll('up')
