@@ -59,12 +59,11 @@ INSERT INTO Challenge (id, name, category, description, mentor_id, image) VALUES
 ('CL4', 'Data Prediction Challenge', 'CT3', 'Predicting data trends accurately', 'U1', 'AS4'),
 ('CL5', 'Recipe Development Contest', 'CT2', 'Creating new and innovative recipes', 'U2', 'AS5');
 
--- Inserting data into Follow table
-INSERT INTO Follow (id, follower_id, followee_id) VALUES
-('FU1', 'U1', 'U2'),
-('FU2', 'U4', 'U1'),
-('FU3', 'U2', 'U1'),
-('FU4', 'U3', 'U2');
+INSERT INTO FollowUser (id, follower_id, followee_id, datefollow) VALUES
+('FU1', 'U1', 'U2', '2022-06-01 10:00:00'),
+('FU2', 'U4', 'U1', '2023-05-15 14:30:00'),
+('FU3', 'U2', 'U1', NOW()),
+('FU4', 'U3', 'U2', NOW());
 
 -- Inserting data into SourceTemplate table
 INSERT INTO SourceTemplate (id, template_id, source_id, sourcetype_id) VALUES

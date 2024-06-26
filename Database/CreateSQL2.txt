@@ -61,14 +61,14 @@ CREATE TABLE Course (
    FOREIGN KEY (mentor_id) REFERENCES Userr(id)
 );
 
-CREATE TABLE Follow (
-   id varchar(5) NOT NULL PRIMARY KEY,
-   follower_id varchar(5),
-   followee_id varchar(5),
+CREATE TABLE FollowUser (
+   id VARCHAR(5) NOT NULL PRIMARY KEY,
+   follower_id VARCHAR(5),
+   followee_id VARCHAR(5),
+   datefollow DATETIME,
    FOREIGN KEY (follower_id) REFERENCES Userr(id),
    FOREIGN KEY (followee_id) REFERENCES Userr(id)
 );
-
 
 CREATE TABLE CredentialIssued (
    id varchar(5) NOT NULL PRIMARY KEY,

@@ -116,3 +116,9 @@ JOIN UserSkill us on s.id = us.skill_id
 JOIN Userr u on us.user_id = u.id
 WHERE u.id ='U1'
 ```
+## lay education cua 1 user
+SELECT e.degree , u.name , u.img
+ from education e
+JOIN University u on e.university_id = u.id
+WHERE e.user_id = 'U1'
+
