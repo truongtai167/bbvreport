@@ -100,13 +100,25 @@ LEFT JOIN Course c ON st.source_id = c.id AND st.sourcetype_id = 'S1'
 LEFT JOIN Challenge ch ON st.source_id = ch.id AND st.sourcetype_id = 'S2'
 WHERE ci.user_id = 'U3';
 ```
-## Select tat ca feedback from programs of mentor
+## Select tat ca feedback tu course , challenge , program of mentor
 ```sql
-SELECT f.rating,f.content 
-FROM Review f
-JOIN Program p on f.receiver_id = p.id
-JOIN Userr u on p.mentor_id = u.id
-WHERE u.id ='U2'
+SELECT 
+    fm.sender_id,
+    fm.rating, 
+    fm.content,
+    CASE 
+        WHEN P.name IS NOT NULL THEN CONCAT('Program: ', P.name)
+        WHEN C.name IS NOT NULL THEN CONCAT('Challenge: ', C.name)
+        WHEN CO.name IS NOT NULL THEN CONCAT('Course: ', CO.name)
+    END AS name
+FROM Review FM
+LEFT JOIN Program P ON FM.receiver_id = P.id AND fm.sourcetype_id = 'S3'
+LEFT JOIN Challenge C ON FM.receiver_id = C.id AND fm.sourcetype_id = 'S2'
+LEFT JOIN Course CO ON FM.receiver_id = CO.id AND fm.sourcetype_id = 'S1'
+WHERE 
+    P.mentor_id = 'U2' OR 
+    C.mentor_id = 'U2' OR 
+    CO.mentor_id = 'U2';
 ```
 ## Select skill
 ```sql 

@@ -28,13 +28,14 @@ INSERT INTO Role (id, name) VALUES
 ('R3', 'Admin');
 
 -- Inserting data into Userr table
-INSERT INTO Userr (id, name, location_id, jobtitle_id, role) VALUES
-('U1', 'Tai Dang', 'L1', 'J1', 'R1'),
-('U2', 'Tai Pham', 'L2', 'J2', 'R2'),
-('U3', 'Tai Nguyen', 'L1', 'J2', 'R2'),
-('U4', 'Tai Loc', 'L3', 'J3', 'R3'),
-('U5', 'Khoa Ngu', 'L1', 'J2', 'R2'),
-('U6', 'Dao Vo', 'L1', 'J4', 'R1');
+INSERT INTO Userr (id, name, location_id, jobtitle_id, role_id,createAt) VALUES
+('U1', 'Tai Dang', 'L1', 'J1', 'R1','2024-06-24 12:00:00'),
+('U2', 'Tai Pham', 'L2', 'J2', 'R2','2024-05-24 12:00:00'),
+('U3', 'Tai Nguyen', 'L1', 'J2', 'R2','2024-04-24 12:00:00'),
+('U4', 'Tai Loc', 'L3', 'J3', 'R3','2024-03-24 12:00:00'),
+('U5', 'Khoa Ngu', 'L1', 'J2', 'R2','2024-06-24 12:00:00'),
+('U6', 'Dao Vo', 'L1', 'J4', 'R1','2024-06-24 12:00:00');
+
 
 INSERT INTO Program (id, name, category, description, price, status, mentor_id, image) VALUES
 ('PG1', 'Software', 'CT6', 'Essential software', 33.99, 'Publish', 'U1', 'AS1'),
