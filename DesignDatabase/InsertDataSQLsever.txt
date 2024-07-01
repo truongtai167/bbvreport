@@ -1,4 +1,4 @@
--- Inserting data into Jobtitle table
+
 INSERT INTO Jobtitle (id, name) VALUES
 ('J1', 'UI/UX Designer'),
 ('J2', 'Senior Software Engineer'),
@@ -6,14 +6,13 @@ INSERT INTO Jobtitle (id, name) VALUES
 ('J4', 'Mentor'),
 ('J5', 'Data Scientist');
 
--- Inserting data into Location table
+
 INSERT INTO Location (id, name) VALUES
 ('L1', 'Ho Chi Minh'),
 ('L2', 'New York'),
 ('L3', 'Ha Noi'),
 ('L4', 'Chicago');
 
--- Inserting data into SourceType table
 INSERT INTO SourceType (id, name) VALUES
 ('S1', 'Course'),
 ('S2', 'Challenge'),
@@ -21,13 +20,11 @@ INSERT INTO SourceType (id, name) VALUES
 ('S4', 'M-P'),
 ('S5', 'M-C');
 
--- Inserting data into Role table
 INSERT INTO Role (id, name) VALUES
 ('R1', 'Mentor'),
 ('R2', 'Mentee'),
 ('R3', 'Admin');
 
--- Inserting data into Userr table
 INSERT INTO Userr (id, name, location_id, jobtitle_id, role_id, createAt, age, gender) VALUES
 ('U1', 'Tai Dang', 'L1', 'J1', 'R1','2024-06-24 12:00:00','24','Male'),
 ('U2', 'Tai Pham', 'L2', 'J2', 'R2','2024-05-24 12:00:00','28','Male'),
@@ -44,7 +41,6 @@ INSERT INTO Program (id, name, category, description, price, status, mentor_id, 
 ('PG4', 'Mentoring Hub', 'CT3', 'Interactive e-learning', 19.99, 'Publish', 'U1', 'AS4');
 
 
--- Inserting data into Course table
 INSERT INTO Course (id, name, category, description, price, status, mentor_id, image) VALUES
 ('C1', 'Grow Your Video Editing Skills', 'CT6', 'Essential software', 39.00, 'Publish', 'U1', 'AS1'),
 ('C2', 'Easy and Creative Food Photography', 'CT5', 'Data analysis and reporting', 59.00, 'Publish', 'U2', 'AS2'),
@@ -52,7 +48,6 @@ INSERT INTO Course (id, name, category, description, price, status, mentor_id, i
 ('C4', 'Grow Your Skills Faster', 'CT3', 'Personalized professional development', 39.00, 'Publish', 'U1', 'AS4'),
 ('C5', 'UI Design, a User-Centric Approach', 'CT2', 'Comprehensive training', 49.00, 'Publish', 'U6', 'AS5');
 
--- Inserting data into Challenge table
 INSERT INTO Challenge (id, name, category, description, mentor_id, image) VALUES
 ('CL1', 'Image Classification', 'CT6', 'The challenge is to classify images accurately', 'U2', 'AS1'),
 ('CL2', 'Fraud Detection Kaggle Competition', 'CT5', 'Participate in a Kaggle competition to detect fraud', 'U1', 'AS2'),
@@ -63,10 +58,10 @@ INSERT INTO Challenge (id, name, category, description, mentor_id, image) VALUES
 INSERT INTO FollowUser (id, follower_id, followee_id, datefollow) VALUES
 ('FU1', 'U1', 'U2', '2022-06-01 10:00:00'),
 ('FU2', 'U4', 'U1', '2023-05-15 14:30:00'),
-('FU3', 'U2', 'U1', NOW()),
-('FU4', 'U3', 'U2', NOW());
+('FU3', 'U2', 'U1', GETDATE()),
+('FU4', 'U3', 'U2', GETDATE());
 
--- Inserting data into SourceTemplate table
+
 INSERT INTO SourceTemplate (id, template_id, source_id, sourcetype_id) VALUES
 ('ST1', '1', 'C4', 'S1'),
 ('ST2', '2', 'PG3', 'S3'),
@@ -105,8 +100,8 @@ INSERT INTO University (id, name, img) VALUES
 
 
 INSERT INTO Education (id, degree, university_id, user_id) VALUES 
-('ED1', 'Bachelor\'s degree', 'UNI1', 'U1'),
-('ED2', 'Master\'s degree', 'UNI2', 'U2'),
+('ED1', 'Bachelor degree', 'UNI1', 'U1'),
+('ED2', 'Master degree', 'UNI2', 'U2'),
 ('ED3', 'Master of Science', 'UNI3', 'U3');
 
 

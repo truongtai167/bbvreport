@@ -73,6 +73,13 @@ CREATE TABLE FollowUser (
    FOREIGN KEY (followee_id) REFERENCES Userr(id)
 );
 
+CREATE TABLE SourceTemplate (
+   id varchar(5) NOT NULL PRIMARY KEY,
+   template_id varchar(5),
+   source_id varchar(5),
+   sourcetype_id varchar(5),
+   FOREIGN KEY (sourcetype_id) REFERENCES SourceType(id)
+);
 CREATE TABLE CredentialIssued (
    id varchar(5) NOT NULL PRIMARY KEY,
    sourcetemplate_id varchar(5),
@@ -82,13 +89,7 @@ CREATE TABLE CredentialIssued (
    FOREIGN KEY (sourcetemplate_id) REFERENCES SourceTemplate(id),
    FOREIGN KEY (user_id) REFERENCES Userr(id)
 );
-CREATE TABLE SourceTemplate (
-   id varchar(5) NOT NULL PRIMARY KEY,
-   template_id varchar(5),
-   source_id varchar(5),
-   sourcetype_id varchar(5),
-   FOREIGN KEY (sourcetype_id) REFERENCES SourceType(id)
-);
+
 
 CREATE TABLE Company (
     id VARCHAR(5) NOT NULL PRIMARY KEY,
@@ -98,12 +99,13 @@ CREATE TABLE Company (
 
 CREATE TABLE Experience (
     id VARCHAR(5) NOT NULL PRIMARY KEY,
-    jobtitle VARCHAR(255),
+    jobtitle_id VARCHAR(5),
     company_id VARCHAR(5),
     type VARCHAR(255),
     user_id VARCHAR(5),
     FOREIGN KEY (company_id) REFERENCES Company(id),
-    FOREIGN KEY (user_id) REFERENCES Userr(id)
+    FOREIGN KEY (user_id) REFERENCES Userr(id),
+    FOREIGN KEY (jobtitle_id) REFERENCES Jobtitle(id)
 );
 
 CREATE TABLE University (

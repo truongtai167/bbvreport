@@ -8,22 +8,10 @@ class Mouse {
     public _device!: Device[]
 
     click(buttonname: string) {
-        const button = this._buttons.find(btn => btn._name === buttonname);
-        if (button) {
-            button.click()
-        }
-        else {
-            console.log(`Button ${buttonname} not found `)
-        }
+        this._buttons.find(btn => btn._name === buttonname)?.click()
     }
     doubleclick(buttonname: string) {
-        const button = this._buttons.find(btn => btn._name === buttonname);
-        if (button) {
-            button.doubleclick()
-        }
-        else {
-            console.log(`Button ${buttonname} not found `)
-        }
+        this._buttons.find(btn => btn._name === buttonname)?.doubleclick()
     }
     scroll(scrolldirection: string) {
         this._scroll.scroll(scrolldirection)
@@ -43,76 +31,88 @@ class Mouse {
     decreaseDpiSens(amount: number) {
         this._dpi.decreaseSens(amount)
     }
+    toggleLight() {
+        this._light.toggleLight()
+    }
     move(xchange: number, ychange: number): Position {
         this._position._x += xchange
         this._position._y += ychange
         return this._position
     }
 
-    getMaxScreenSize() {
-        let totalWidth = 0;
-        for (const device of this._device) {
+    // getMaxScreenSize() {
+    //     let totalWidth = 0;
+    //     for (const device of this._device) {
 
-            totalWidth += device._widthscreen;
-        }
-        console.log(totalWidth)
-        return totalWidth
-    }
+    //         totalWidth += device._widthscreen;
+    //     }
+    //     console.log(totalWidth)
+    //     return totalWidth
+    // }
 }
 
 class Button {
     public _name: string
     public _shape: Shape
+    public _status: string
 
-    constructor(name: string, shape: Shape) {
+    constructor(name: string, shape: Shape = new Shape(30, 20), status: string = 'default') {
         this._name = name
         this._shape = shape
+        this._status = status
     }
 
     click() {
-        console.log(`Click on button ${this._name}`)
+        this._status = 'Click'
     }
     doubleclick() {
-        console.log(`Double click on button ${this._name}`)
+        this._status = 'Double click'
     }
 }
-class Scroll {
-    public _shape: Shape
-    public _scroll_direction: string[]
 
-    constructor(shape: Shape, scroll_dicrection: string[]) {
-        this._shape = shape
+
+class Scroll {
+    public _scroll_direction: string[]
+    public _speed: number
+    public _status: string
+
+    constructor(speed: number, status: string = 'default', scroll_dicrection: string[] = ["up", "down"]) {
         this._scroll_direction = scroll_dicrection
+        this._speed = speed
+        this._status = status
     }
+
     scroll(dicrection: string) {
-        if (this._scroll_direction.includes(dicrection))
-            console.log(`Scrolled ${dicrection}`)
+        this._status = this._scroll_direction.includes(dicrection) ? dicrection : this._status
     }
+
 
 }
 
 class Light {
     public _color: string
     public _brightness: number
+    public _status: boolean
 
 
 
-    constructor(color: string, brightness: number) {
+    constructor(color: string, brightness: number, status: boolean = false) {
         this._color = color
         this._brightness = brightness
+        this._status = status
     }
 
     changeColor(newColor: string) {
         this._color = newColor
-        console.log(`Light color changed to ${newColor}`)
     }
     increaseBrightness(amount: number) {
         this._brightness += amount
-        console.log(`Brightness increased to ${this._brightness}`)
     }
     decreaseBrightness(amount: number) {
         this._brightness -= amount
-        console.log(`Brightness decreased to ${this._brightness}`)
+    }
+    toggleLight() {
+        this._status = !this._status;
     }
 }
 
@@ -148,11 +148,9 @@ class DPI {
 
     increaseSens(amount: number) {
         this._sensitivity += amount
-        console.log(`Sensitivity increased to ${this._sensitivity}`)
     }
     decreaseSens(amount: number) {
         this._sensitivity -= amount
-        console.log(`Sensitivity decreased to ${this._sensitivity}`)
     }
 }
 
@@ -171,25 +169,24 @@ class Device {
 
 // tao chuot test
 const myMouse = new Mouse();
-myMouse._buttons = [new Button("left", new Shape(30, 20)), new Button("right", new Shape(30, 20))];
+myMouse._buttons = [new Button("left"), new Button("right", new Shape(30, 20))];
 myMouse._light = new Light('Pink', 30);
 myMouse._shape = new Shape(10, 20);
 myMouse._position = new Position(0, 0);
-myMouse._scroll = new Scroll(new Shape(10, 20), ["up", "down"]);
+myMouse._scroll = new Scroll(100);
 myMouse._dpi = new DPI(800);
 myMouse._device = [new Device(1920, 1080), new Device(2920, 1880)];
 console.log(myMouse)
 
 
 //
-myMouse.click('Left')
+myMouse.click('left')
 myMouse.scroll('up')
 myMouse.changeLightColor('red')
 myMouse.doubleclick('Left')
 myMouse.increaseLightBrightness(30)
 myMouse.increaseDpiSens(300)
 myMouse.move(3, 3)
-myMouse.getMaxScreenSize()
 console.log(myMouse)
 
 
