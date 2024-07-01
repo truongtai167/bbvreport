@@ -1,22 +1,11 @@
 class Mouse {
-    public _buttons: Button[]
-    public _light: Light
-    public _shape: Shape
-    public _position: Position
-    public _scroll: Scroll
-    public _dpi: DPI
-    public _device: Device[]
-
-
-    constructor(buttons: Button[], light: Light, shape: Shape, position: Position, scroll: Scroll, dpi: DPI, device: Device[]) {
-        this._buttons = buttons;
-        this._light = light;
-        this._shape = shape
-        this._position = position
-        this._scroll = scroll
-        this._dpi = dpi
-        this._device = device
-    }
+    public _buttons!: Button[]
+    public _light!: Light
+    public _shape!: Shape
+    public _position!: Position
+    public _scroll!: Scroll
+    public _dpi!: DPI
+    public _device!: Device[]
 
     click(buttonname: string) {
         const button = this._buttons.find(btn => btn._name === buttonname);
@@ -180,32 +169,19 @@ class Device {
 
 
 
-// shape
-const rectangular = new Shape(30, 20)
-const circular = new Shape(10, 20)
-
-// button
-const leftButtonn = new Button('Left', rectangular)
-const rightButtonn = new Button('Right', rectangular)
-const nextButton = new Button('Next', rectangular)
-const backButton = new Button('Back', rectangular)
-// light
-const pinkLight = new Light('Pink', 30)
-//postion
-const mousepostion = new Position(0, 0);
-//scroll
-const mousescroll = new Scroll(circular, ["up", "down"])
-//DPI
-const dpi = new DPI(800)
-// device
-const laptop = new Device(1920, 1080)
-const LGscreen = new Device(2920, 1880)
-//
-const myMouse = new Mouse([leftButtonn, rightButtonn], pinkLight, rectangular, mousepostion, mousescroll, dpi, [laptop, LGscreen])
+// tao chuot test
+const myMouse = new Mouse();
+myMouse._buttons = [new Button("left", new Shape(30, 20)), new Button("right", new Shape(30, 20))];
+myMouse._light = new Light('Pink', 30);
+myMouse._shape = new Shape(10, 20);
+myMouse._position = new Position(0, 0);
+myMouse._scroll = new Scroll(new Shape(10, 20), ["up", "down"]);
+myMouse._dpi = new DPI(800);
+myMouse._device = [new Device(1920, 1080), new Device(2920, 1880)];
 console.log(myMouse)
 
 
-
+//
 myMouse.click('Left')
 myMouse.scroll('up')
 myMouse.changeLightColor('red')

@@ -24,6 +24,8 @@ CREATE TABLE Userr (
    jobtitle_id varchar(5),
    role_id varchar(5),
    createAt datetime,
+   age int,
+   gender varchar(10),
    FOREIGN KEY (jobtitle_id) REFERENCES Jobtitle(id),
    FOREIGN KEY (location_id) REFERENCES Location(id),
    FOREIGN KEY (role_id) REFERENCES Role(id)

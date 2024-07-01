@@ -2,6 +2,10 @@
 ```sql
 SELECT name from location
 ```
+# lay tat ca jobtitle 
+```sql
+SELECT * FROM Jobtitle
+```
 ## hien thi thong tin mentor len trang chinh
 ```sql 
 SELECT 
