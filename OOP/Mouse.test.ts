@@ -55,6 +55,12 @@ describe("Mouse class", () => {
         expect(myMouse._light._status).toBe(true)
     })
 
+    test ('should move' ,() =>{
+        myMouse.move(3,5)
+        expect(myMouse._position._x).toBe(3);
+        expect(myMouse._position._y).toBe(5);
+    }) 
+
     // test('max width', () => {
     //     myMouse.getMaxScreenSize();
     //     const result = myMouse.getMaxScreenSize();

@@ -167,27 +167,5 @@ class Device {
 
 
 
-// tao chuot test
-const myMouse = new Mouse();
-myMouse._buttons = [new Button("left"), new Button("right", new Shape(30, 20))];
-myMouse._light = new Light('Pink', 30);
-myMouse._shape = new Shape(10, 20);
-myMouse._position = new Position(0, 0);
-myMouse._scroll = new Scroll(100);
-myMouse._dpi = new DPI(800);
-myMouse._device = [new Device(1920, 1080), new Device(2920, 1880)];
-console.log(myMouse)
-
-
-//
-myMouse.click('left')
-myMouse.scroll('up')
-myMouse.changeLightColor('red')
-myMouse.doubleclick('Left')
-myMouse.increaseLightBrightness(30)
-myMouse.increaseDpiSens(300)
-myMouse.move(3, 3)
-console.log(myMouse)
-
 
 export { Mouse, Shape, Position, Scroll, Button, Light, DPI, Device }
