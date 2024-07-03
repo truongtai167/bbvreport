@@ -1,40 +1,42 @@
 ## 
 ```sql
 SELECT 
-    -- Total Users
     (SELECT COUNT(*) FROM Userr) AS TotalUsers,
     
-    -- Users This Month
     (SELECT COUNT(*) FROM Userr
-     WHERE MONTH(createAt) = MONTH(CURRENT_DATE) 
-       AND YEAR(createAt) = YEAR(CURRENT_DATE)) AS UsersThisMonth,
+     WHERE MONTH(createAt) = MONTH(GETDATE()) 
+       AND YEAR(createAt) = YEAR(GETDATE())) AS UsersThisMonth,
     
-    -- Percentage Change This Month
     ROUND(
-        ((SELECT COUNT(*) FROM Userr
-          WHERE MONTH(createAt) = MONTH(CURRENT_DATE) 
-            AND YEAR(createAt) = YEAR(CURRENT_DATE)) -
-         (SELECT COUNT(*) FROM Userr
-          WHERE MONTH(createAt) = MONTH(CURRENT_DATE) - 1 
-            AND YEAR(createAt) = YEAR(CURRENT_DATE))
-        ) / (SELECT COUNT(*) FROM Userr 
-             WHERE MONTH(createAt) = MONTH(CURRENT_DATE) - 1 
-               AND YEAR(createAt) = YEAR(CURRENT_DATE)) * 100, 2
+        (
+            (SELECT COUNT(*) FROM Userr
+             WHERE MONTH(createAt) = MONTH(GETDATE()) 
+               AND YEAR(createAt) = YEAR(GETDATE())) -
+            (SELECT COUNT(*) FROM Userr
+             WHERE MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+               AND YEAR(createAt) = YEAR(GETDATE()))
+        ) / NULLIF((SELECT COUNT(*) FROM Userr 
+                    WHERE MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+                      AND YEAR(createAt) = YEAR(GETDATE())), 0) * 100, 2
     ) AS PercentageChangeThisMonth,
     
-    -- Users This Week
     (SELECT COUNT(*) FROM Userr
-     WHERE YEARWEEK(createAt, 1) = YEARWEEK(CURRENT_DATE, 1)) AS UsersThisWeek,
+     WHERE DATEPART(ISO_WEEK, createAt) = DATEPART(ISO_WEEK, GETDATE()) 
+       AND YEAR(createAt) = YEAR(GETDATE())) AS UsersThisWeek,
     
-    -- Percentage Change This Week
     ROUND(
-        ((SELECT COUNT(*) FROM Userr 
-          WHERE YEARWEEK(createAt, 1) = YEARWEEK(CURRENT_DATE, 1)) -
-         (SELECT COUNT(*) FROM Userr
-          WHERE YEARWEEK(createAt, 1) = YEARWEEK(CURRENT_DATE, 1) - 1)
-        ) / (SELECT COUNT(*) FROM Userr
-             WHERE YEARWEEK(createAt, 1) = YEARWEEK(CURRENT_DATE, 1) - 1) * 100, 2
+        (
+            (SELECT COUNT(*) FROM Userr 
+             WHERE DATEPART(ISO_WEEK, createAt) = DATEPART(ISO_WEEK, GETDATE()) 
+               AND YEAR(createAt) = YEAR(GETDATE())) -
+            (SELECT COUNT(*) FROM Userr
+             WHERE DATEPART(ISO_WEEK, createAt) = DATEPART(ISO_WEEK, DATEADD(WEEK, -1, GETDATE())) 
+               AND YEAR(createAt) = YEAR(GETDATE()))
+        ) / NULLIF((SELECT COUNT(*) FROM Userr
+                    WHERE DATEPART(ISO_WEEK, createAt) = DATEPART(ISO_WEEK, DATEADD(WEEK, -1, GETDATE())) 
+                      AND YEAR(createAt) = YEAR(GETDATE())), 0) * 100, 2
     ) AS PercentageChangeThisWeek;
+
 
 ```
 
@@ -43,27 +45,31 @@ SELECT
 SELECT 
     -- Mentors This Month
     (SELECT COUNT(*) FROM Userr
-     WHERE role_id = 'R1' 
-     ) AS TotalMentor,
+     WHERE role_id = 'R1') AS TotalMentor,
     
     -- Percentage Change in Mentors This Month
-    ROUND(
-        (
-            (SELECT COUNT(*) FROM Userr
-             WHERE role_id = 'R1' 
-               AND MONTH(createAt) = MONTH(CURRENT_DATE) 
-               AND YEAR(createAt) = YEAR(CURRENT_DATE)) -
-            (SELECT COUNT(*) FROM Userr
-             WHERE role_id = 'R1' 
-               AND MONTH(createAt) = MONTH(CURRENT_DATE) - 1 
-               AND YEAR(createAt) = YEAR(CURRENT_DATE))
-        ) / NULLIF(
-            (SELECT COUNT(*) FROM Userr
-             WHERE role_id = 'R1' 
-               AND MONTH(createAt) = MONTH(CURRENT_DATE) - 1 
-               AND YEAR(createAt) = YEAR(CURRENT_DATE)), 0
-        ) * 100, 2
-    ) AS PercentageChangeMentorsThisMonth;
+    CASE
+        WHEN (SELECT COUNT(*) FROM Userr
+              WHERE role_id = 'R1' 
+                AND MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+                AND YEAR(createAt) = YEAR(GETDATE())) = 0 THEN 0
+        ELSE ROUND(
+            (
+                (SELECT COUNT(*) FROM Userr
+                 WHERE role_id = 'R1' 
+                   AND MONTH(createAt) = MONTH(GETDATE()) 
+                   AND YEAR(createAt) = YEAR(GETDATE())) -
+                (SELECT COUNT(*) FROM Userr
+                 WHERE role_id = 'R1' 
+                   AND MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(GETDATE()))
+            ) * 100.0 / NULLIF(
+                (SELECT COUNT(*) FROM Userr
+                 WHERE role_id = 'R1' 
+                   AND MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(GETDATE())), 0), 2
+        )
+    END AS PercentageChangeMentorsThisMonth;
 ```
 
 ## Select total mentee and mentee this month vs last month
@@ -71,27 +77,31 @@ SELECT
 SELECT 
     -- Mentors This Month
     (SELECT COUNT(*) FROM Userr
-     WHERE role_id = 'R2' 
-     ) AS TotalMentor,
+     WHERE role_id = 'R2') AS TotalMentor,
     
     -- Percentage Change in Mentors This Month
-    ROUND(
-        (
-            (SELECT COUNT(*) FROM Userr
-             WHERE role_id = 'R2' 
-               AND MONTH(createAt) = MONTH(CURRENT_DATE) 
-               AND YEAR(createAt) = YEAR(CURRENT_DATE)) -
-            (SELECT COUNT(*) FROM Userr
-             WHERE role_id = 'R2' 
-               AND MONTH(createAt) = MONTH(CURRENT_DATE) - 1 
-               AND YEAR(createAt) = YEAR(CURRENT_DATE))
-        ) / NULLIF(
-            (SELECT COUNT(*) FROM Userr
-             WHERE role_id = 'R2' 
-               AND MONTH(createAt) = MONTH(CURRENT_DATE) - 1 
-               AND YEAR(createAt) = YEAR(CURRENT_DATE)), 0
-        ) * 100, 2
-    ) AS PercentageChangeMentorsThisMonth;
+    CASE
+        WHEN (SELECT COUNT(*) FROM Userr
+              WHERE role_id = 'R2' 
+                AND MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+                AND YEAR(createAt) = YEAR(GETDATE())) = 0 THEN 0
+        ELSE ROUND(
+            (
+                (SELECT COUNT(*) FROM Userr
+                 WHERE role_id = 'R2' 
+                   AND MONTH(createAt) = MONTH(GETDATE()) 
+                   AND YEAR(createAt) = YEAR(GETDATE())) -
+                (SELECT COUNT(*) FROM Userr
+                 WHERE role_id = 'R2' 
+                   AND MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(GETDATE()))
+            ) * 100.0 / NULLIF(
+                (SELECT COUNT(*) FROM Userr
+                 WHERE role_id = 'R2' 
+                   AND MONTH(createAt) = MONTH(DATEADD(MONTH, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(GETDATE())), 0), 2
+        )
+    END AS PercentageChangeMentorsThisMonth;
 ```
 
 
@@ -102,33 +112,33 @@ SELECT
 
 SELECT 
     -- Total Mentors This Week
-    (SELECT COUNT(*) FROM Userr
+    (SELECT COUNT(*) FROM Userr 
      WHERE role_id = 'R1' 
-       AND WEEK(createAt, 1) = WEEK(CURRENT_DATE, 1) 
-       AND YEAR(createAt) = YEAR(CURRENT_DATE)) AS TotalMentorsThisWeek,
+       AND DATEPART(WEEK, createAt) = DATEPART(WEEK, GETDATE()) 
+       AND YEAR(createAt) = YEAR(GETDATE())) AS TotalMentorsThisWeek,
        
     -- Percentage Change in Mentors This Week vs Last Week
     CASE 
-        WHEN (SELECT COUNT(*) FROM Userr
+        WHEN (SELECT COUNT(*) FROM Userr 
               WHERE role_id = 'R1' 
-                AND WEEK(createAt, 1) = WEEK(CURRENT_DATE - INTERVAL 1 WEEK, 1) 
-                AND YEAR(createAt) = YEAR(CURRENT_DATE - INTERVAL 1 WEEK)) = 0
+                AND DATEPART(WEEK, createAt) = DATEPART(WEEK, DATEADD(WEEK, -1, GETDATE())) 
+                AND YEAR(createAt) = YEAR(DATEADD(WEEK, -1, GETDATE()))) = 0
         THEN 100.00
         ELSE ROUND(
             (
                 (SELECT COUNT(*) FROM Userr 
                  WHERE role_id = 'R1' 
-                   AND WEEK(createAt, 1) = WEEK(CURRENT_DATE, 1) 
-                   AND YEAR(createAt) = YEAR(CURRENT_DATE)) -
-                (SELECT COUNT(*) FROM Userr
+                   AND DATEPART(WEEK, createAt) = DATEPART(WEEK, GETDATE()) 
+                   AND YEAR(createAt) = YEAR(GETDATE())) -
+                (SELECT COUNT(*) FROM Userr 
                  WHERE role_id = 'R1' 
-                   AND WEEK(createAt, 1) = WEEK(CURRENT_DATE - INTERVAL 1 WEEK, 1) 
-                   AND YEAR(createAt) = YEAR(CURRENT_DATE - INTERVAL 1 WEEK))
+                   AND DATEPART(WEEK, createAt) = DATEPART(WEEK, DATEADD(WEEK, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(DATEADD(WEEK, -1, GETDATE())))
             ) / NULLIF(
-                (SELECT COUNT(*) FROM Userr
+                (SELECT COUNT(*) FROM Userr 
                  WHERE role_id = 'R1' 
-                   AND WEEK(createAt, 1) = WEEK(CURRENT_DATE - INTERVAL 1 WEEK, 1) 
-                   AND YEAR(createAt) = YEAR(CURRENT_DATE - INTERVAL 1 WEEK)), 0
+                   AND DATEPART(WEEK, createAt) = DATEPART(WEEK, DATEADD(WEEK, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(DATEADD(WEEK, -1, GETDATE()))), 0
             ) * 100, 2)
     END AS PercentageChangeMentorsThisWeek;
 ```
@@ -137,40 +147,43 @@ SELECT
 
 
 ## Select total mentee and mentee this week vs last week
+```sql
 SELECT 
     -- Total Mentors This Week
     (SELECT COUNT(*) FROM Userr 
      WHERE role_id = 'R2' 
-       AND WEEK(createAt, 1) = WEEK(CURRENT_DATE, 1) 
-       AND YEAR(createAt) = YEAR(CURRENT_DATE)) AS TotalMentorsThisWeek,
+       AND DATEPART(WEEK, createAt) = DATEPART(WEEK, GETDATE()) 
+       AND YEAR(createAt) = YEAR(GETDATE())) AS TotalMentorsThisWeek,
        
     -- Percentage Change in Mentors This Week vs Last Week
     CASE 
-        WHEN (SELECT COUNT(*) FROM Userr2 
+        WHEN (SELECT COUNT(*) FROM Userr 
               WHERE role_id = 'R2' 
-                AND WEEK(createAt, 1) = WEEK(CURRENT_DATE - INTERVAL 1 WEEK, 1) 
-                AND YEAR(createAt) = YEAR(CURRENT_DATE - INTERVAL 1 WEEK)) = 0
+                AND DATEPART(WEEK, createAt) = DATEPART(WEEK, DATEADD(WEEK, -1, GETDATE())) 
+                AND YEAR(createAt) = YEAR(DATEADD(WEEK, -1, GETDATE()))) = 0
         THEN 100.00
         ELSE ROUND(
             (
                 (SELECT COUNT(*) FROM Userr 
                  WHERE role_id = 'R2' 
-                   AND WEEK(createAt, 1) = WEEK(CURRENT_DATE, 1) 
-                   AND YEAR(createAt) = YEAR(CURRENT_DATE)) -
-                (SELECT COUNT(*) FROM Userr
+                   AND DATEPART(WEEK, createAt) = DATEPART(WEEK, GETDATE()) 
+                   AND YEAR(createAt) = YEAR(GETDATE())) -
+                (SELECT COUNT(*) FROM Userr 
                  WHERE role_id = 'R2' 
-                   AND WEEK(createAt, 1) = WEEK(CURRENT_DATE - INTERVAL 1 WEEK, 1) 
-                   AND YEAR(createAt) = YEAR(CURRENT_DATE - INTERVAL 1 WEEK))
+                   AND DATEPART(WEEK, createAt) = DATEPART(WEEK, DATEADD(WEEK, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(DATEADD(WEEK, -1, GETDATE())))
             ) / NULLIF(
-                (SELECT COUNT(*) FROM Userr
+                (SELECT COUNT(*) FROM Userr 
                  WHERE role_id = 'R2' 
-                   AND WEEK(createAt, 1) = WEEK(CURRENT_DATE - INTERVAL 1 WEEK, 1) 
-                   AND YEAR(createAt) = YEAR(CURRENT_DATE - INTERVAL 1 WEEK)), 0
+                   AND DATEPART(WEEK, createAt) = DATEPART(WEEK, DATEADD(WEEK, -1, GETDATE())) 
+                   AND YEAR(createAt) = YEAR(DATEADD(WEEK, -1, GETDATE()))), 0
             ) * 100, 2)
     END AS PercentageChangeMentorsThisWeek;
 
-## Select mentee by age and gender
+```
 
+## Select mentee by age and gender
+```sql
 SELECT 
     CASE
         WHEN age BETWEEN 15 AND 20 THEN '15-20'
@@ -181,7 +194,15 @@ SELECT
     END AS AgeGroup,
     gender,
     COUNT(*) AS Count
-FROM Userr u
-WHERE u.role_id = 'R2'
-GROUP BY AgeGroup, gender
+FROM Userr
+GROUP BY 
+    CASE
+        WHEN age BETWEEN 15 AND 20 THEN '15-20'
+        WHEN age BETWEEN 21 AND 25 THEN '21-25'
+        WHEN age BETWEEN 26 AND 30 THEN '26-30'
+        WHEN age BETWEEN 31 AND 35 THEN '31-35'
+        ELSE 'Other'
+    END,
+    gender
 ORDER BY AgeGroup, gender;
+```

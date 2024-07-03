@@ -128,5 +128,23 @@ INSERT INTO UserSkill (id, user_id, skill_id) VALUES
 ('US2', 'U1', 'S4'),
 ('US3', 'U2', 'S1');
 
+INSERT INTO Review (id, receiver_id, sender_id, rating, content, sourcetype_id) VALUES
+('F1', 'PG2', 'U3', 4.5, 'Excellent tool for tracking environment', 'S3'),
+('F2', 'PG2', 'U4', 4, 'Very helpful for managing patient reco', 'S3'),
+('F3', 'PG2', 'U5', 4.75, 'Great platform for learning new skills.', 'S3'),
+('F4', 'PG3', 'U5', 4.2, 'Useful for financial planning.', 'S3'),
+('F5', 'CL1', 'U3', 4.5, 'Very insightful introduction to quantum', 'S2'),
+('F6', 'CL2', 'U3', 4, 'Comprehensive digital marketing strategy', 'S2'),
+('F7', 'CL1', 'U4', 4.8, 'Great exercises and peer reviews.', 'S2'),
+('F8', 'C1', 'U4', 4.5, 'Challenging yet rewarding.', 'S1'),
+('F9', 'C2', 'U5', 4, 'Learned a lot about social media marketing', 'S1');
 
+INSERT INTO ProgramUser (id, user_id, program_id, progresspercent, status)
+VALUES 
+    ('PU1', 'U3', 'PG1', 50, 'In Progress'),
+    ('PU2', 'U3', 'PG2', 30, 'In Progress'),
+    ('PU3', 'U4', 'PG1', 80, 'Completed'),
+    ('PU4', 'U4', 'PG2', 69, 'In Progress'),
+    ('PU5', 'U4', 'PG3', 50, 'In Progress'),
+    ('PU6', 'U2', 'PG1', 30, 'In Progress');
 

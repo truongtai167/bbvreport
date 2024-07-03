@@ -127,6 +127,8 @@ CREATE TABLE ProgramUser (
     id VARCHAR(5) NOT NULL PRIMARY KEY,
     user_id VARCHAR(5),
     program_id VARCHAR(5),
+    progresspercent INT,
+    status VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES Userr(id),
     FOREIGN KEY (program_id) REFERENCES Program(id)
 );
