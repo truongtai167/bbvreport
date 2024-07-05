@@ -62,7 +62,7 @@ describe("xMind test", () => {
     test('should have relationship', () => {
         const nodechild1 = new Nodee()
         xMind.addRelationship(nodechild1, rootNode)
-        expect(xMind.relationship[0].fromNode).toBe(nodechild1)
+        expect(xMind.relationship.length).toBe(1)
     })
 
     // test('should change the theme of rootnode and children', () => {

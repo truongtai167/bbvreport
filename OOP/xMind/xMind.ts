@@ -1,12 +1,19 @@
 interface INode {
     addChild(node: INode): void
     removeChild(node: INode): void
+}
+interface IText {
     changeText(text: string): void
-    changeColor(color: string): void
-    changeShape(name: string): void
     changeTextSize(size: number): void
 }
 
+interface IShape {
+    changeShape(name: string): void
+}
+
+interface IColor {
+    changeColor(color: string): void
+}
 
 class MindMap {
     public rootNode: Nodee
@@ -43,7 +50,7 @@ class MindMap {
     // }
 }
 
-class Nodee implements INode {
+class Nodee implements INode, IText, IColor, IShape {
     public child!: Nodee[]
     public color!: Color
     public shape!: Shape
@@ -93,7 +100,7 @@ class Position {
         this.y = y
     }
 }
-class Shape {
+class Shape implements IShape {
     public name: string
     public fill: boolean
     public border: boolean
@@ -107,7 +114,7 @@ class Shape {
         this.name = name
     }
 }
-class Color {
+class Color implements IColor {
     public name: string
 
     constructor(name: string) {
@@ -119,7 +126,7 @@ class Color {
     }
 }
 
-class Text {
+class Text implements IText {
     public content: string
     public size: number
     public style: string
