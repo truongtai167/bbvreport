@@ -1,0 +1,150 @@
+
+INSERT INTO Jobtitle (id, name) VALUES
+('J1', 'UI/UX Designer'),
+('J2', 'Senior Software Engineer'),
+('J3', 'CEO'),
+('J4', 'Mentor'),
+('J5', 'Data Scientist');
+
+
+INSERT INTO Location (id, name) VALUES
+('L1', 'Ho Chi Minh'),
+('L2', 'New York'),
+('L3', 'Ha Noi'),
+('L4', 'Chicago');
+
+INSERT INTO SourceType (id, name) VALUES
+('S1', 'Course'),
+('S2', 'Challenge'),
+('S3', 'Program'),
+('S4', 'M-P'),
+('S5', 'M-C');
+
+INSERT INTO Role (id, name) VALUES
+('R1', 'Mentor'),
+('R2', 'Mentee'),
+('R3', 'Admin');
+
+INSERT INTO Userr (id, name, location_id, jobtitle_id, role_id, createAt, age, gender) VALUES
+('U1', 'Tai Dang', 'L1', 'J1', 'R1','2024-06-24 12:00:00','24','Male'),
+('U2', 'Tai Pham', 'L2', 'J2', 'R2','2024-05-24 12:00:00','28','Male'),
+('U3', 'Tai Nguyen', 'L1', 'J2', 'R2','2024-04-24 12:00:00','30','Female'),
+('U4', 'Tai Loc', 'L3', 'J3', 'R2','2024-03-24 12:00:00','20','Male'),
+('U5', 'Khoa Ngu', 'L1', 'J2', 'R2','2024-06-24 12:00:00','22','Female'),
+('U6', 'Dao Vo', 'L1', 'J4', 'R1','2024-06-24 12:00:00','30','Male');
+
+
+INSERT INTO Program (id, name, category, description, price, status, mentor_id, image) VALUES
+('PG1', 'Software', 'CT6', 'Essential software', 33.99, 'Publish', 'U1', 'AS1'),
+('PG2', 'Data Science', 'CT5', 'Data analysis', 12.99, 'Publish', 'U2', 'AS2'),
+('PG3', 'Web Development', 'CT4', 'Interactive e-learning', 17.77, 'Publish', 'U2', 'AS3'),
+('PG4', 'Mentoring Hub', 'CT3', 'Interactive e-learning', 19.99, 'Publish', 'U1', 'AS4');
+
+
+INSERT INTO Course (id, name, category, description, price, status, mentor_id, image) VALUES
+('C1', 'Grow Your Video Editing Skills', 'CT6', 'Essential software', 39.00, 'Publish', 'U1', 'AS1'),
+('C2', 'Easy and Creative Food Photography', 'CT5', 'Data analysis and reporting', 59.00, 'Publish', 'U2', 'AS2'),
+('C3', 'Create Your Own Sustainable Clothing Brand', 'CT4', 'Interactive e-learning', 29.00, 'Publish', 'U2', 'AS3'),
+('C4', 'Grow Your Skills Faster', 'CT3', 'Personalized professional development', 39.00, 'Publish', 'U1', 'AS4'),
+('C5', 'UI Design, a User-Centric Approach', 'CT2', 'Comprehensive training', 49.00, 'Publish', 'U6', 'AS5');
+
+INSERT INTO Challenge (id, name, category, description, mentor_id, image) VALUES
+('CL1', 'Image Classification', 'CT6', 'The challenge is to classify images accurately', 'U2', 'AS1'),
+('CL2', 'Fraud Detection Kaggle Competition', 'CT5', 'Participate in a Kaggle competition to detect fraud', 'U1', 'AS2'),
+('CL3', 'Short Story Writing Contest', 'CT4', 'Writing a compelling short story', 'U2', 'AS3'),
+('CL4', 'Data Prediction Challenge', 'CT3', 'Predicting data trends accurately', 'U1', 'AS4'),
+('CL5', 'Recipe Development Contest', 'CT2', 'Creating new and innovative recipes', 'U2', 'AS5');
+
+INSERT INTO FollowUser (id, follower_id, followee_id, datefollow) VALUES
+('FU1', 'U1', 'U2', '2022-06-01 10:00:00'),
+('FU2', 'U4', 'U1', '2023-05-15 14:30:00'),
+('FU3', 'U2', 'U1', GETDATE()),
+('FU4', 'U3', 'U2', GETDATE());
+
+
+INSERT INTO SourceTemplate (id, template_id, source_id, sourcetype_id) VALUES
+('ST1', '1', 'C4', 'S1'),
+('ST2', '2', 'PG3', 'S3'),
+('ST3', '3', 'PG4', 'S3'),
+('ST4', '5', 'CL1', 'S2'),
+('ST5', '4', 'C5', 'S1'),
+('ST6', '6', 'C5', 'S1'),
+('ST7', '7', 'CL5', 'S2'),
+('ST8', '8', 'PG4', 'S3'),
+('ST9', '9', 'PG2', 'S3'),
+('ST10', '10', 'CL2', 'S2'),
+('ST11', '11', 'CL2', 'S2');
+
+INSERT INTO CredentialIssued (id, sourcetemplate_id, user_id, credentialcode, certified_at) VALUES
+('C1', 'ST2', 'U3', '123241', '2024-06-24 12:00:00'),
+('C2', 'ST3', 'U3', '453232', '2024-06-24 12:00:00'),
+('C3', 'ST9', 'U1', '214234', '2024-06-24 12:00:00'),
+('C4', 'ST10', 'U4', '132411', '2024-06-24 12:00:00'),
+('C5', 'ST4', 'U1', '234355', '2024-06-24 12:00:00'),
+('C6', 'ST11', 'U1', '143452', '2024-06-24 12:00:00');
+
+
+INSERT INTO Company (id, name, img) VALUES 
+('C01', 'bbv', 'link'),
+('C02', 'Microsoft', 'link'),
+('C03', 'FPT Software', 'link');
+
+INSERT INTO Experience (id, jobtitle_id, company_id, type, user_id, isworking) VALUES 
+('E1', 'J1', 'C01', 'Fulltime', 'U1',1),
+('E2', 'J3', 'C02', 'Fulltime', 'U2',1);
+
+INSERT INTO University (id, name, img) VALUES 
+('UNI1', 'HCMC University of Technology and Education', 'link'),
+('UNI2', 'Harvard University', 'link'),
+('UNI3', 'Boston University', 'link');
+
+
+INSERT INTO Education (id, degree, university_id, user_id) VALUES 
+('ED1', 'Bachelor degree', 'UNI1', 'U1'),
+('ED2', 'Master degree', 'UNI2', 'U2'),
+('ED3', 'Master of Science', 'UNI3', 'U3');
+
+
+INSERT INTO Post (id, title, user_id, views) VALUES 
+('P01', 'Why Creatives Thinking Small', 'U1', 0),
+('P02', 'How to finish things and goals', 'U1', 0),
+('P03', 'Publication Day Has Arrived', 'U2', 0);
+
+INSERT INTO Event (id, title, user_id, views) VALUES 
+('E1', 'Zero to Hero - UI/UX Designers', 'U1', 0),
+('E2', 'Professional AI - Workshop', 'U1', 0),
+('E3', 'Hero to zero - Web Developers', 'U2', 0);
+
+
+
+INSERT INTO Skill (id, name) VALUES 
+('S1', 'Design Software'),
+('S2', 'Research'),
+('S3', 'User Experience'),
+('S4', 'User Interface Design');
+
+INSERT INTO UserSkill (id, user_id, skill_id) VALUES 
+('US1', 'U1', 'S3'),
+('US2', 'U1', 'S4'),
+('US3', 'U2', 'S1');
+
+INSERT INTO Review (id, receiver_id, sender_id, rating, content, sourcetype_id) VALUES
+('F1', 'PG2', 'U3', 4.5, 'Excellent tool for tracking environment', 'S3'),
+('F2', 'PG2', 'U4', 4, 'Very helpful for managing patient reco', 'S3'),
+('F3', 'PG2', 'U5', 4.75, 'Great platform for learning new skills.', 'S3'),
+('F4', 'PG3', 'U5', 4.2, 'Useful for financial planning.', 'S3'),
+('F5', 'CL1', 'U3', 4.5, 'Very insightful introduction to quantum', 'S2'),
+('F6', 'CL2', 'U3', 4, 'Comprehensive digital marketing strategy', 'S2'),
+('F7', 'CL1', 'U4', 4.8, 'Great exercises and peer reviews.', 'S2'),
+('F8', 'C1', 'U4', 4.5, 'Challenging yet rewarding.', 'S1'),
+('F9', 'C2', 'U5', 4, 'Learned a lot about social media marketing', 'S1');
+
+INSERT INTO ProgramUser (id, user_id, program_id, progresspercent, status)
+VALUES 
+    ('PU1', 'U3', 'PG1', 50, 'In Progress'),
+    ('PU2', 'U3', 'PG2', 30, 'In Progress'),
+    ('PU3', 'U4', 'PG1', 80, 'Completed'),
+    ('PU4', 'U4', 'PG2', 69, 'In Progress'),
+    ('PU5', 'U4', 'PG3', 50, 'In Progress'),
+    ('PU6', 'U2', 'PG1', 30, 'In Progress');
+
