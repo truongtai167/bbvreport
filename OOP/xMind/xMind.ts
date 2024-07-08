@@ -16,27 +16,58 @@ interface IColor {
 }
 
 class MindMap {
-    public rootNode: Nodee
-    public otherNode: Nodee[]
-    public relationship: Relationship[]
+    public sheets: Sheet[];
+
+    constructor(sheets: Sheet[] = [new Sheet()]) {
+        this.sheets = sheets;
+    }
+
+    addSheet(sheet: Sheet) {
+        this.sheets.push(sheet);
+    }
+
+    removeSheet(sheet: Sheet) {
+        this.sheets = this.sheets.filter(s => s !== sheet);
+    }
+}
+
+class Sheet {
+    public rootNode: Nodee;
+    public floatingNode: Nodee[];
+    public relationship: Relationship[];
+    public name: string
     // public theme: Theme
 
-    constructor(rootNode: Nodee, otherNode: Nodee[] = [], relationship: Relationship[] = []) {
-        this.rootNode = rootNode
-        this.otherNode = otherNode
-        this.relationship = relationship
+    constructor(rootNode: Nodee = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Black'), new Text(13, 'Arial', 'Central Topic')), otherNode: Nodee[] = [], relationship: Relationship[] = [], name: string = 'Mind Map') {
+        this.rootNode = rootNode;
+        this.floatingNode = otherNode;
+        this.relationship = relationship;
+        this.name = name
         // this.theme = theme
+        const childNode1 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Blue'), new Text(13, 'Arial', 'Main Topic 1'));
+        const childNode2 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Red'), new Text(13, 'Arial', 'Main Topic 2'));
+        const childNode3 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Yellow'), new Text(13, 'Arial', 'Main Topic 3'));
+        const childNode4 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Green'), new Text(13, 'Arial', 'Main Topic 4'));
+        this.rootNode.addChild(childNode1);
+        this.rootNode.addChild(childNode2);
+        this.rootNode.addChild(childNode3);
+        this.rootNode.addChild(childNode4);
     }
 
-    addNode(node: Nodee) {
-        this.otherNode.push(node)
+    addFloatingNode(node: Nodee) {
+        this.floatingNode.push(node);
     }
-    removeNode(node: Nodee) {
-        this.otherNode = this.otherNode.filter(n => n !== node)
+
+    removeFloatingNode(node: Nodee) {
+        this.floatingNode = this.floatingNode.filter(n => n !== node);
     }
+    renameSheet(name: string) {
+        this.name = name
+    }
+
     addRelationship(fromNode: Nodee, toNode: Nodee, color: Color = new Color('Black'), text: Text = new Text(13, 'Arial', 'Relationship')) {
-        const relationship = new Relationship(fromNode, toNode, color, text)
-        this.relationship.push(relationship)
+        const relationship = new Relationship(fromNode, toNode, color, text);
+        this.relationship.push(relationship);
     }
 
     // applyThemeToNode(node: Nodee) {
@@ -51,33 +82,51 @@ class MindMap {
 }
 
 class Nodee implements INode, IText, IColor, IShape {
-    public child!: Nodee[]
-    public color!: Color
-    public shape!: Shape
-    public position!: Position
-    public text!: Text
+    public child: Nodee[];
+    public color: Color;
+    public shape: Shape;
+    public position: Position;
+    public text: Text;
+
+    constructor(
+        position: Position = new Position(0, 0),
+        shape: Shape = new Shape(),
+        color: Color = new Color('Black'),
+        text: Text = new Text()
+    ) {
+        this.child = [];
+        this.position = position;
+        this.shape = shape;
+        this.color = color;
+        this.text = text;
+    }
 
     addChild(node: Nodee) {
-        this.child.push(node)
+        this.child.push(node);
     }
+
     removeChild(node: Nodee) {
-        this.child = this.child.filter(n => n !== node)
+        this.child = this.child.filter(n => n !== node);
     }
+
     changeText(text: string) {
-        this.text.changeText(text)
+        this.text.changeText(text);
     }
+
     changeColor(color: string) {
-        this.color.changeColor(color)
+        this.color.changeColor(color);
     }
+
     changeShape(name: string) {
-        this.shape.changeShape(name)
+        this.shape.changeShape(name);
     }
+
     changeTextSize(size: number) {
-        this.text.changeTextSize(size)
+        this.text.changeTextSize(size);
     }
 }
 
-class Relationship {
+class Relationship implements IText, IColor {
     public fromNode: Nodee
     public toNode: Nodee
     public color: Color
@@ -89,6 +138,17 @@ class Relationship {
         this.color = color
         this.text = text
     }
+    changeText(text: string) {
+        this.text.changeText(text);
+    }
+    changeTextSize(size: number) {
+        this.text.changeTextSize(size);
+    }
+    changeColor(color: string) {
+        this.color.changeColor(color);
+    }
+
+
 }
 
 class Position {
@@ -168,7 +228,10 @@ class Text implements IText {
 //         }
 //     }
 // }
+const xMind = new MindMap()
+xMind.addSheet(new Sheet())
+console.log(xMind)
 
 
 
-export { Nodee, Relationship, Position, Shape, Color, Text, MindMap }
+export { Nodee, Relationship, Position, Shape, Color, Text, Sheet, MindMap }

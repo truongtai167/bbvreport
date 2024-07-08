@@ -172,6 +172,7 @@ CREATE TABLE Event (
     title VARCHAR(255),
     user_id INT,
     views INT,
+    createAt DATETIME
     FOREIGN KEY (user_id) REFERENCES Userr(id)
 );
 
@@ -189,4 +190,11 @@ CREATE TABLE AdsProgram (
     program_id INT FOREIGN KEY (program_id) REFERENCES program(id),
     startAt DATETIME,
     endAt DATETIME 
+);
+CREATE TABLE EventUser (
+    id INT PRIMARY KEY,
+    event_id INT,
+    user_id INT,
+    FOREIGN KEY (event_id) REFERENCES Event(id),
+    FOREIGN KEY (user_id) REFERENCES Userr(id),
 );

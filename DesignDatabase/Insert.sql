@@ -112,10 +112,10 @@ INSERT INTO Post (id, title, user_id, views) VALUES
 (2, 'How to finish things and goals', 1, 0),
 (3, 'Publication Day Has Arrived', 2, 0);
 
-INSERT INTO Event (id, title, user_id, views) VALUES 
-(1, 'Zero to Hero - UI/UX Designers', 1, 0),
-(2, 'Professional AI - Workshop', 1, 0),
-(3, 'Hero to zero - Web Developers', 2, 0);
+INSERT INTO Event (id, title, user_id, views, createAt) VALUES 
+(1, 'Zero to Hero - UI/UX Designers', 1, 0, '2024-06-29 12:00:00'),
+(2, 'Professional AI - Workshop', 1, 0, '2024-07-02 12:00:00'),
+(3, 'Hero to zero - Web Developers', 2, 0, '2024-07-03 12:00:00');
 
 INSERT INTO Skill (id, name) VALUES 
 (1, 'Design Software'),
@@ -153,3 +153,8 @@ INSERT INTO AdsProgram (program_id, startAt, endAt) VALUES
 (3, '2024-08-01 00:00:00', '2024-08-15 23:59:59'),
 (2, '2024-07-15 00:00:00', '2024-08-15 23:59:59');
 
+INSERT INTO EventUser(id , event_id,user_id) VALUES
+(1,1,1),
+(2,1,2),
+(3,1,3),
+(4,2,4)
