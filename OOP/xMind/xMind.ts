@@ -31,8 +31,17 @@ class XMind {
     removeSheet(sheet: Sheet) {
         this.sheets = this.sheets.filter(s => s !== sheet);
     }
+    duplicateSheet(sheet: Sheet): Sheet {
+        const copySheet = new Sheet(
+            sheet.rootNode,
+            sheet.floatingNode,
+            sheet.relationship,
+            `${sheet.name} - Copy`,);
+        this.sheets.push(copySheet);
+        return copySheet;
+    }
 }
-
+    
 class Sheet {
     public rootNode: Nodee;
     public floatingNode: Nodee[];
@@ -67,6 +76,7 @@ class Sheet {
     removeRelationship(fromNode: Nodee, toNode: Nodee) {
         this.relationship = this.relationship.filter(rel => !(rel.fromNode === fromNode && rel.toNode === toNode));
     }
+
     // applyThemeToNode(node: Nodee) {
     //     this.theme.applyTheme(node);
     //     node.child.forEach(childNode => {

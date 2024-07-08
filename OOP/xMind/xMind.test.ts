@@ -23,6 +23,13 @@ describe("xMind test", () => {
         xMind.removeSheet(newsheet)
         expect(xMind.sheets).not.toContain(newsheet)
     })
+
+    test('should duplicated sheet', () => {
+        xMind.duplicateSheet(xMind.sheets[0])
+        expect(xMind.sheets.length).toBe(2)
+        expect(xMind.sheets[1].name).toBe('Mind Map - Copy')
+    })
+
     test('add floating node to the sheet', () => {
         xMind.sheets[0].addFloatingNode();
         expect(xMind.sheets[0].floatingNode.length).toBe(1);
@@ -100,4 +107,6 @@ describe("xMind test", () => {
         expect(nodechau.parentNode).toBe(xMind.sheets[0].rootNode)
         expect(xMind.sheets[0].rootNode.child).toContain(nodechau)
     })
+
+
 })
