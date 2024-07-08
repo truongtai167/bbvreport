@@ -1,6 +1,8 @@
 interface INode {
     addChild(node: INode): void
     removeChild(node: INode): void
+    changeParentNode(newParent: Nodee | null): void
+    duplicate(): Nodee
 }
 interface IText {
     changeText(text: string): void
@@ -15,7 +17,7 @@ interface IColor {
     changeColor(color: string): void
 }
 
-class MindMap {
+class XMind {
     public sheets: Sheet[];
 
     constructor(sheets: Sheet[] = [new Sheet()]) {
@@ -38,24 +40,17 @@ class Sheet {
     public name: string
     // public theme: Theme
 
-    constructor(rootNode: Nodee = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Black'), new Text(13, 'Arial', 'Central Topic')), otherNode: Nodee[] = [], relationship: Relationship[] = [], name: string = 'Mind Map') {
+    constructor(rootNode: Nodee = NodeFactory.createDefaultRootNode(), otherNode: Nodee[] = [], relationship: Relationship[] = [], name: string = 'Mind Map') {
         this.rootNode = rootNode;
         this.floatingNode = otherNode;
         this.relationship = relationship;
         this.name = name
         // this.theme = theme
-        const childNode1 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Blue'), new Text(13, 'Arial', 'Main Topic 1'));
-        const childNode2 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Red'), new Text(13, 'Arial', 'Main Topic 2'));
-        const childNode3 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Yellow'), new Text(13, 'Arial', 'Main Topic 3'));
-        const childNode4 = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Green'), new Text(13, 'Arial', 'Main Topic 4'));
-        this.rootNode.addChild(childNode1);
-        this.rootNode.addChild(childNode2);
-        this.rootNode.addChild(childNode3);
-        this.rootNode.addChild(childNode4);
     }
 
-    addFloatingNode(node: Nodee) {
-        this.floatingNode.push(node);
+    addFloatingNode() {
+        const floatingNode = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Gray'), new Text(13, 'Arial', 'Floating Topic'))
+        this.floatingNode.push(floatingNode);
     }
 
     removeFloatingNode(node: Nodee) {
@@ -69,7 +64,9 @@ class Sheet {
         const relationship = new Relationship(fromNode, toNode, color, text);
         this.relationship.push(relationship);
     }
-
+    removeRelationship(fromNode: Nodee, toNode: Nodee) {
+        this.relationship = this.relationship.filter(rel => !(rel.fromNode === fromNode && rel.toNode === toNode));
+    }
     // applyThemeToNode(node: Nodee) {
     //     this.theme.applyTheme(node);
     //     node.child.forEach(childNode => {
@@ -87,26 +84,30 @@ class Nodee implements INode, IText, IColor, IShape {
     public shape: Shape;
     public position: Position;
     public text: Text;
-
+    public parentNode: Nodee | null;
     constructor(
         position: Position = new Position(0, 0),
         shape: Shape = new Shape(),
         color: Color = new Color('Black'),
-        text: Text = new Text()
+        text: Text = new Text(),
+        parentNode: Nodee | null = null
     ) {
         this.child = [];
         this.position = position;
         this.shape = shape;
         this.color = color;
         this.text = text;
+        this.parentNode = parentNode;
     }
 
     addChild(node: Nodee) {
+        node.parentNode = this
         this.child.push(node);
     }
 
     removeChild(node: Nodee) {
         this.child = this.child.filter(n => n !== node);
+        node.parentNode = null;
     }
 
     changeText(text: string) {
@@ -123,6 +124,32 @@ class Nodee implements INode, IText, IColor, IShape {
 
     changeTextSize(size: number) {
         this.text.changeTextSize(size);
+    }
+    changeParentNode(newParent: Nodee | null) {
+        // Remove from current parent's child list, if exists
+        this.parentNode?.removeChild(this);
+
+        // Set new parent
+        this.parentNode = newParent;
+
+        // Add to new parent's child list, if new parent exists
+        newParent?.addChild(this);
+    }
+
+    duplicate(): Nodee {
+        const duplicateNode = new Nodee(
+            new Position(this.position.x, this.position.y),
+            new Shape(this.shape.name),
+            new Color(this.color.name),
+            new Text(this.text.size, this.text.style, this.text.content),
+            this.parentNode
+        );
+        this.child.forEach(childNode => {
+            const duplicatedChild = childNode.duplicate();
+            duplicateNode.addChild(duplicatedChild)
+        });
+        this.parentNode?.addChild(duplicateNode)
+        return duplicateNode
     }
 }
 
@@ -204,6 +231,17 @@ class Text implements IText {
     }
 
 }
+
+class NodeFactory {
+    static createDefaultRootNode(): Nodee {
+        const rootNode = new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Black'), new Text(13, 'Arial', 'Central Topic'));
+        rootNode.addChild(new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Blue'), new Text(13, 'Arial', 'Main Topic 1')));
+        rootNode.addChild(new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Red'), new Text(13, 'Arial', 'Main Topic 2')));
+        rootNode.addChild(new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Yellow'), new Text(13, 'Arial', 'Main Topic 3')));
+        rootNode.addChild(new Nodee(new Position(0, 0), new Shape('Rectangle'), new Color('Green'), new Text(13, 'Arial', 'Main Topic 4')));
+        return rootNode;
+    }
+}
 // class Theme {
 //     public color: Color
 //     public shape: Shape
@@ -228,10 +266,21 @@ class Text implements IText {
 //         }
 //     }
 // }
-const xMind = new MindMap()
+
+
+
+
+const xMind = new XMind()
 xMind.addSheet(new Sheet())
-console.log(xMind)
+const nodechau = new Nodee()
+xMind.sheets[0].rootNode.child[0].addChild(nodechau)
+nodechau.changeParentNode(xMind.sheets[0].rootNode)
+
+const duplicateNode = nodechau.duplicate()
+
+console.log(nodechau)
+console.log(duplicateNode)
 
 
 
-export { Nodee, Relationship, Position, Shape, Color, Text, Sheet, MindMap }
+export { Nodee, Relationship, Position, Shape, Color, Text, Sheet, XMind }
