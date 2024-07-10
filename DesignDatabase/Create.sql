@@ -287,3 +287,14 @@ CREATE TABLE EventUser (
     FOREIGN KEY (event_id) REFERENCES Event(id),
     FOREIGN KEY (user_id) REFERENCES [User](id),
 );
+
+CREATE TABLE MentorReview (
+    id INT PRIMARY KEY,
+    sender_id INT,
+    receiver_id INT,
+    rating_star INT,
+    content VARCHAR(255),
+    FOREIGN KEY (sender_id) REFERENCES [user](id),
+    FOREIGN KEY (receiver_id) REFERENCES [user](id)
+);
+

@@ -437,6 +437,17 @@ INSERT INTO EventUser(id , event_id,user_id) VALUES
 (3,1,3),
 (4,2,4)
 
+INSERT INTO MentorReview (id, sender_id, receiver_id, rating_star, content) VALUES
+(1, 1, 2, 5, 'Excellent mentorship!'),
+(2, 2, 3, 4, 'Very helpful and insightful.'),
+(3, 3, 4, 3, 'Good mentor, but can improve.'),
+(4, 4, 5, 5, 'Amazing experience. Highly recommend!'),
+(5, 5, 6, 2, 'Needs to be more punctual.'),
+(6, 1, 3, 4, 'Provided great feedback.'),
+(7, 2, 4, 5, 'Exceptional mentor, very knowledgeable.'),
+(8, 3, 5, 3, 'Average experience, but learned a lot.'),
+(9, 4, 6, 4, 'Great mentor, very supportive.'),
+(10, 5, 1, 5, 'Outstanding guidance and support.');
 -- INSERT TABLE config (
 --     id INT PRIMARY KEY,
 --     config_type VARCHAR(255),
