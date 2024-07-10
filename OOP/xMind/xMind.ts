@@ -278,19 +278,4 @@ class NodeFactory {
 // }
 
 
-
-
-const xMind = new XMind()
-xMind.addSheet(new Sheet())
-const nodechau = new Nodee()
-xMind.sheets[0].rootNode.child[0].addChild(nodechau)
-nodechau.changeParentNode(xMind.sheets[0].rootNode)
-
-const duplicateNode = nodechau.duplicate()
-
-console.log(nodechau)
-console.log(duplicateNode)
-
-
-
 export { Nodee, Relationship, Position, Shape, Color, Text, Sheet, XMind }
