@@ -23,6 +23,7 @@ CREATE TABLE [User] (
    createAt DATETIME,
    age INT,
    gender VARCHAR(10),
+   status BIT
    FOREIGN KEY (jobtitle_id) REFERENCES Jobtitle(id),
    FOREIGN KEY (location_id) REFERENCES Location(id),
 );
@@ -226,17 +227,21 @@ CREATE TABLE Company (
     name VARCHAR(255),
     img VARCHAR(255)
 );
-
+CREATE TABLE WorkingType (
+	id INT PRIMARY KEY,
+	name VARCHAR(255),
+)
 CREATE TABLE Experience (
     id INT NOT NULL PRIMARY KEY,
     jobtitle_id INT,
     company_id INT,
-    type VARCHAR(255),
+    type_id INT,
     user_id INT,
     isworking BIT,
     FOREIGN KEY (company_id) REFERENCES Company(id),
     FOREIGN KEY (user_id) REFERENCES [User](id),
-    FOREIGN KEY (jobtitle_id) REFERENCES Jobtitle(id)
+    FOREIGN KEY (jobtitle_id) REFERENCES Jobtitle(id),
+	FOREIGN KEY (type_id) REFERENCES WorkingType(id)
 );
 
 CREATE TABLE University (

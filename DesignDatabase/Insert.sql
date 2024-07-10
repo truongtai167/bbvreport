@@ -23,13 +23,13 @@ INSERT INTO Location (id, name) VALUES
 (3, 'Ha Noi'),
 (4, 'Chicago');
 
-INSERT INTO [User] (id, name, location_id, jobtitle_id, role_id, createAt, age, gender) VALUES
-(1, 'Tai Dang', 1, 1, 2, '2024-06-24 12:00:00', 24, 'Male'),
-(2, 'Tai Pham', 2, 2, 2, '2024-05-24 12:00:00', 28, 'Male'),
-(3, 'Tai Nguyen', 1, 2, 2, '2024-04-24 12:00:00', 30, 'Female'),
-(4, 'Tai Loc', 3, 3, 3, '2024-03-24 12:00:00', 20, 'Male'),
-(5, 'Khoa Nguyen', 1, 2, 2, '2024-06-24 12:00:00', 22, 'Female'),
-(6, 'Dao Vo', 1, 4, 2, '2024-06-24 12:00:00', 30, 'Male');
+INSERT INTO [User] (id, name, location_id, jobtitle_id, role_id, createAt, age, gender, status) VALUES
+(1, 'Tai Dang', 1, 1, 2, '2024-06-24 12:00:00', 24, 'Male',1),
+(2, 'Tai Pham', 2, 2, 2, '2024-05-24 12:00:00', 28, 'Male',1),
+(3, 'Tai Nguyen', 1, 2, 2, '2024-04-24 12:00:00', 30, 'Female',1),
+(4, 'Tai Loc', 3, 3, 3, '2024-03-24 12:00:00', 20, 'Male',1),
+(5, 'Khoa Nguyen', 1, 2, 2, '2024-06-24 12:00:00', 22, 'Female',0),
+(6, 'Dao Vo', 1, 4, 2, '2024-06-24 12:00:00', 30, 'Male',0);
 
 INSERT INTO Category (name) VALUES
 ('Information Technology'),
@@ -396,9 +396,14 @@ INSERT INTO Company (id, name, img) VALUES
 (2, 'Microsoft', 'link'),
 (3, 'FPT Software', 'link');
 
-INSERT INTO Experience (id, jobtitle_id, company_id, type, user_id,isworking) VALUES 
-(1, 1, 1, 'Fulltime', 1,1),
-(2, 3, 2, 'Fulltime', 2,1);
+INSERT INTO WorkingType(id,name) VALUES
+(1 , 'Fulltime'),
+(2 , 'Partime'),
+(3 , 'Online Program' )
+
+INSERT INTO Experience (id, jobtitle_id, company_id, type_id, user_id,isworking) VALUES 
+(1, 1, 1, 1, 1,1),
+(2, 3, 2, 2, 2,1);
 
 INSERT INTO University (id, name, img) VALUES 
 (1, 'HCMC University of Technology and Education', 'link'),
