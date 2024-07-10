@@ -24,12 +24,12 @@ INSERT INTO Location (id, name) VALUES
 (4, 'Chicago');
 
 INSERT INTO [User] (id, name, location_id, jobtitle_id, role_id, createAt, age, gender) VALUES
-(1, 'Tai Dang', 1, 1, 5, '2024-06-24 12:00:00', 24, 'Male'),
-(2, 'Tai Pham', 2, 2, 5, '2024-05-24 12:00:00', 28, 'Male'),
-(3, 'Tai Nguyen', 1, 2, 5, '2024-04-24 12:00:00', 30, 'Female'),
-(4, 'Tai Loc', 3, 3, 4, '2024-03-24 12:00:00', 20, 'Male'),
-(5, 'Khoa Nguyen', 1, 2, 5, '2024-06-24 12:00:00', 22, 'Female'),
-(6, 'Dao Vo', 1, 4, 5, '2024-06-24 12:00:00', 30, 'Male');
+(1, 'Tai Dang', 1, 1, 2, '2024-06-24 12:00:00', 24, 'Male'),
+(2, 'Tai Pham', 2, 2, 2, '2024-05-24 12:00:00', 28, 'Male'),
+(3, 'Tai Nguyen', 1, 2, 2, '2024-04-24 12:00:00', 30, 'Female'),
+(4, 'Tai Loc', 3, 3, 3, '2024-03-24 12:00:00', 20, 'Male'),
+(5, 'Khoa Nguyen', 1, 2, 2, '2024-06-24 12:00:00', 22, 'Female'),
+(6, 'Dao Vo', 1, 4, 2, '2024-06-24 12:00:00', 30, 'Male');
 
 INSERT INTO Category (name) VALUES
 ('Information Technology'),
@@ -72,7 +72,7 @@ INSERT INTO Course (name, category_id, price, description, created_at, [user_id]
 ('Social Media Marketing', 3, 39.99, 'Effective strategies for marketing on social media platforms.', CURRENT_TIMESTAMP, 4, 65),
 ('Personal Development and Wellness', 4, 29.99, 'Techniques for improving personal development and wellness.', CURRENT_TIMESTAMP, 5, 60),
 ('Advanced Photography Techniques', 5, 89.99, 'Advanced techniques for professional photography.', CURRENT_TIMESTAMP, 6, 85),
-('Video Editing for Beginners', 6, 69.99, 'A beginner’s guide to video editing and essential tools.', CURRENT_TIMESTAMP, 2, 80),
+('Video Editing for Beginners', 6, 69.99, 'A beginnerï¿½s guide to video editing and essential tools.', CURRENT_TIMESTAMP, 2, 80),
 ('Machine Learning with Python', 1, 99.99, 'Advanced machine learning concepts and applications using Python.', CURRENT_TIMESTAMP, 3, 85),
 ('User Experience Research', 2, 79.99, 'Methods and tools for conducting user experience research.', CURRENT_TIMESTAMP, 4, 80),
 ('Content Marketing Strategies', 3, 59.99, 'Effective strategies for content marketing.', CURRENT_TIMESTAMP, 5, 75),

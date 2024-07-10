@@ -25,7 +25,6 @@ CREATE TABLE [User] (
    gender VARCHAR(10),
    FOREIGN KEY (jobtitle_id) REFERENCES Jobtitle(id),
    FOREIGN KEY (location_id) REFERENCES Location(id),
-   FOREIGN KEY (role_id) REFERENCES Setting(id)
 );
 
 CREATE TABLE Category (
